@@ -63,7 +63,7 @@ export function SigninForm({
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card className="overflow-hidden p-0">
-                <CardContent className="grid p-0 md:grid-cols-2">
+                <CardContent className="p-0">
                     <form className="p-6 md:p-8" onSubmit={handleSubmit}>
                         <FieldGroup>
                             <div className="flex flex-col items-center gap-2 text-center">
@@ -92,6 +92,7 @@ export function SigninForm({
                                     type="password"
                                     value={formData.password}
                                     onChange={handleInputChange}
+                                    placeholder="Enter password"
                                 />
                                 {errors.password && (
                                     <p className="text-sm text-red-500 mt-1">{errors.password}</p>
@@ -136,13 +137,6 @@ export function SigninForm({
                             </Field>
                         </FieldGroup>
                     </form>
-                    <div className="relative hidden bg-muted md:block">
-                        <img
-                            src="/placeholder.svg"
-                            alt="Image"
-                            className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-                        />
-                    </div>
                 </CardContent>
             </Card>
             <FieldDescription className="px-6 text-center">

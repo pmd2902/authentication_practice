@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
+import { useAuthStore } from "@/stores/useAuthStore"
+import { useNavigate } from "react-router"
 
 export function SignupForm({
   className,
@@ -23,8 +25,9 @@ export function SignupForm({
     password: "",
     confirmPassword: "",
   })
-
+  const { register } = useAuthStore();
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const navigate = useNavigate();
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
@@ -56,12 +59,13 @@ export function SignupForm({
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (validateForm()) {
-      console.log("Form is valid", formData)
-      // Submit form logic here
-    }
+    if (!validateForm()) return
+
+    const { firstname, lastname, username, email, password } = formData
+    await register(username, password, email, firstname, lastname)
+    navigate("/login");
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
