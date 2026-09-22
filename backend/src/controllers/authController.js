@@ -98,7 +98,7 @@ export const signout = async (req, res) => {
             // Delete cookie
             res.clearCookie('refreshToken');
         }
-        return res.status(204).json({ message: "Signout successful" });
+        return res.status(200).json({ message: "Signout successful" });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: "Internal server error" });

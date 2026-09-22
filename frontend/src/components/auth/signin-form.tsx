@@ -10,11 +10,15 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
+import { useAuthStore } from "@/stores/useAuthStore"
+import { useNavigate } from "react-router"
 
 export function SigninForm({
     className,
     ...props
 }: React.ComponentProps<"div">) {
+    const { login } = useAuthStore()
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: "",
         password: "",
@@ -36,12 +40,15 @@ export function SigninForm({
         return Object.keys(newErrors).length === 0
     }
 
-    const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (validateForm()) {
             setLoading(true)
             console.log("Form is valid", formData)
             // Submit form logic here
+            await login(formData.username, formData.password);
+            navigate("/");
+            setLoading(false)
         }
     }
 
