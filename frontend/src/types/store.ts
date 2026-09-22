@@ -8,4 +8,6 @@ export interface AuthState {
     register: (username: string, password: string, email: string, firstName: string, lastName: string) => Promise<void>;
     login: (username: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
+    fetchMe: () => Promise<void>;
+    refresh: () => Promise<void>;
 }
