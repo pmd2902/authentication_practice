@@ -9,6 +9,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     user: null,
     loading: false,
 
+    setAccessToken: (accessToken: string) => {
+        set({ accessToken });
+    },
     clearState: () => {
         set({ accessToken: null, user: null, loading: false });
     },
@@ -27,11 +30,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     },
     login: async (username, password) => {
         try {
+            const { fetchMe, setAccessToken } = get()
             set({ loading: true })
             const { accessToken } = await authService.login(username, password);
-            set({ accessToken });
+            setAccessToken(accessToken);
             toast.success('Login successful!');
-            await get().fetchMe();
+            await fetchMe();
         } catch (error) {
             console.log(error);
             toast.error('Error logging in. Please try again.');
@@ -41,8 +45,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     },
     logout: async () => {
         try {
+            const { clearState } = get();
             set({ loading: true });
-            get().clearState();
+            clearState();
             await authService.logout();
             toast.success("Logout successful");
         } catch (error) {
@@ -68,10 +73,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     refresh: async () => {
         try {
             set({ loading: true })
-            const { user, fetchMe } = get();
+            const { user, fetchMe, setAccessToken } = get();
             const accessToken = await authService.refresh();
-
-            set({ accessToken })
+            setAccessToken(accessToken);
 
             if (!user) {
                 await fetchMe();

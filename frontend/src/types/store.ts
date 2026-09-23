@@ -4,6 +4,7 @@ export interface AuthState {
     accessToken: string | null;
     user: User | null; // Replace 'any' with your user type if available
     loading: boolean;
+    setAccessToken: (accessToken: string) => void;
     clearState: () => void;
     register: (username: string, password: string, email: string, firstName: string, lastName: string) => Promise<void>;
     login: (username: string, password: string) => Promise<void>;
